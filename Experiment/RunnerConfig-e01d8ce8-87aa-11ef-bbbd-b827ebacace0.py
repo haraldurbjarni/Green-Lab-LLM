@@ -17,7 +17,7 @@ class RunnerConfig:
 
     # ================================ USER SPECIFIC CONFIG ================================
     """The name of the experiment."""
-    name:                       str             = "new_runner_experiment4"
+    name:                       str             = "new_runner_experiment5"
 
     """The path in which Experiment Runner will create a folder with the name `self.name`, in order to store the
     results from this experiment. (Path does not need to exist - it will be created if necessary.)
@@ -84,7 +84,7 @@ class RunnerConfig:
         algorithm = context.run_variation['algorithm']
         llm  = context.run_variation['llm']
 
-        self.target = subprocess.Popen(['./BB/ChatGPT/sol'],
+        self.target = subprocess.Popen(['./BB/ChatGPT/sol.cpp'],
             stdout=subprocess.PIPE, stderr=subprocess.PIPE, cwd=self.ROOT_DIR,
         )
 
