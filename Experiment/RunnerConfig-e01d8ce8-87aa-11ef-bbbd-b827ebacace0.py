@@ -84,9 +84,9 @@ class RunnerConfig:
         current_path = os.getcwd()
         output.console_log(f"Current working directory: {current_path}")
 
-        # Paths
-        cpp_file = os.path.join('./Experiment/BB/ChatGPT/sol.cpp')  # Path to sol.cpp
-        executable_file = os.path.join('./Experiment/BB/ChatGPT/sol')  # Path to the compiled executable
+        # Use ROOT_DIR to build the path to 'sol'
+        cpp_file = os.path.join(self.ROOT_DIR, 'SWA/ChatGPT/sol.cpp')  # Path to sol.cpp
+        executable_file = os.path.join(self.ROOT_DIR, 'SWA/ChatGPT/sol')  # Path to the compiled executable
 
         # Check if cpp_file exists
         if not os.path.exists(cpp_file):
@@ -107,14 +107,13 @@ class RunnerConfig:
             output.console_log(f"Compilation failed: {compile_error.stderr.decode()}")
             return  # Exit if compilation fails
 
-        if os.path.exists(executable_file):
-            os.chmod(executable_file, 0o755)  # Ensure the executable has the correct permissions
-
         # Check if executable exists
         if not os.path.exists(executable_file):
             output.console_log(f"Compiled executable not found: {executable_file}")
             return
 
+        # Log that the executable exists
+        output.console_log(f"Executable file found: {executable_file}")
 
         # Step 2: Execute the compiled file
         try:
@@ -126,7 +125,6 @@ class RunnerConfig:
             return  # Exit if execution fails
 
         output.console_log("Config.start_run() called!")
-
 
     def start_measurement(self, context: RunnerContext) -> None:
         """Perform any activity required for starting measurements."""
