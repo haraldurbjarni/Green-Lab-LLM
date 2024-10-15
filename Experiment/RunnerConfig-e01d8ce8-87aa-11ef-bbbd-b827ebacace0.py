@@ -12,14 +12,13 @@ from pathlib import Path
 from os.path import dirname, realpath
 import subprocess
 import os
-import output
 
 class RunnerConfig:
     ROOT_DIR = Path(dirname(realpath(__file__)))
 
     # ================================ USER SPECIFIC CONFIG ================================
     """The name of the experiment."""
-    name:                       str             = "new_runner_experiment6"
+    name:                       str             = "new_runner_experiment7"
 
     """The path in which Experiment Runner will create a folder with the name `self.name`, in order to store the
     results from this experiment. (Path does not need to exist - it will be created if necessary.)
