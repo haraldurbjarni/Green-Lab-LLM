@@ -12,6 +12,7 @@ from pathlib import Path
 from os.path import dirname, realpath
 import subprocess
 import os
+import time  # Import the time module
 
 class RunnerConfig:
     ROOT_DIR = Path(dirname(realpath(__file__)))
@@ -98,11 +99,14 @@ class RunnerConfig:
         if not os.path.exists(output_dir):
             os.makedirs(output_dir)
 
-        # Step 1: Compile the C++ code
+        # Step 1: Measure the compilation time
+        compile_start_time = time.time()  # Record start time
         try:
             compile_process = subprocess.run(['g++', '-o', executable_file, cpp_file],
                                              stdout=subprocess.PIPE, stderr=subprocess.PIPE, check=True)
-            output.console_log("Compilation successful!")
+            compile_end_time = time.time()  # Record end time
+            compile_duration = compile_end_time - compile_start_time  # Calculate duration
+            output.console_log(f"Compilation successful! Time taken: {compile_duration:.2f} seconds")
         except subprocess.CalledProcessError as compile_error:
             output.console_log(f"Compilation failed: {compile_error.stderr.decode()}")
             return  # Exit if compilation fails
