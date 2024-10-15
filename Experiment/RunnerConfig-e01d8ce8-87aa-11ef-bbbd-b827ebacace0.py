@@ -54,8 +54,8 @@ class RunnerConfig:
     def create_run_table_model(self) -> RunTableModel:
         """Create and return the run_table model here. A run_table is a List (rows) of tuples (columns),
         representing each run performed"""
-        factor1 = FactorModel("example_factor1", ['example_treatment1', 'example_treatment2', 'example_treatment3'])
-        factor2 = FactorModel("example_factor2", [True, False])
+        llm_factor = FactorModel("llm", ['ChatGPT', 'Claude', 'Gemeni', 'Llama', 'Mistral'])
+        algorithm_factor = FactorModel("algorithm", ['BB', 'BFA', 'SWA'])
         self.run_table_model = RunTableModel(
             factors=[factor1, factor2],
             exclude_variations=[
@@ -82,6 +82,13 @@ class RunnerConfig:
         """Perform any activity required for starting the run here.
         For example, starting the target system to measure.
         Activities after starting the run should also be performed here."""
+
+        algorithm = context.run_variation['algorithm']
+        llm  = context.run_variation['llm']
+
+        self.target = subprocess.Popen(['./primer'],
+            stdout=subprocess.PIPE, stderr=subprocess.PIPE, cwd=self.ROOT_DIR,
+        )
 
         output.console_log("Config.start_run() called!")
 
