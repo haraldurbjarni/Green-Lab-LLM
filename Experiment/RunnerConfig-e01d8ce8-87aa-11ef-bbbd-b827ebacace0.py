@@ -85,8 +85,8 @@ class RunnerConfig:
         output.console_log(f"Current working directory: {current_path}")
 
         # Use ROOT_DIR to build the path to 'sol'
-        cpp_file = os.path.join(self.ROOT_DIR, 'SWA/ChatGPT/sol.cpp')
-        executable_file = os.path.join(self.ROOT_DIR, 'SWA/ChatGPT/sol')
+        cpp_file = os.path.join(self.ROOT_DIR, f'{algorithm}/{llm}/sol.cpp')
+        executable_file = os.path.join(self.ROOT_DIR, f'{algorithm}/{llm}/sol')
 
         if not os.path.exists(cpp_file):
             output.console_log(f"File not found: {cpp_file}")

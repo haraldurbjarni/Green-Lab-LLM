@@ -95,7 +95,7 @@ int main() {
   int n; // Number of items
 
   // Read profit from "profit.txt"
-  ifstream profitFile("profit.txt");
+  ifstream profitFile("../profit.txt");
   if (profitFile.is_open()) {
     int p;
     while (profitFile >> p) {
@@ -108,7 +108,7 @@ int main() {
   }
 
   // Read weight from "weight.txt"
-  ifstream weightFile("weight.txt");
+  ifstream weightFile("../weight.txt");
   if (weightFile.is_open()) {
     int w;
     while (weightFile >> w) {

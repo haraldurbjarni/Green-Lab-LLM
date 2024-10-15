@@ -86,7 +86,7 @@ private:
 
 int main() {
     Knapsack knapsack(10);
-    knapsack.readData("weight.txt", "profit.txt");
+    knapsack.readData("../weight.txt", "../profit.txt");
     knapsack.solve();
     return 0;
 }
