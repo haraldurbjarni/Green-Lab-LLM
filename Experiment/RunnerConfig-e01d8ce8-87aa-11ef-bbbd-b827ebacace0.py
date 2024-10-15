@@ -84,7 +84,7 @@ class RunnerConfig:
         algorithm = context.run_variation['algorithm']
         llm  = context.run_variation['llm']
 
-        self.target = subprocess.Popen(['./primer'],
+        self.target = subprocess.Popen(['./BB/ChatGPT/sol'],
             stdout=subprocess.PIPE, stderr=subprocess.PIPE, cwd=self.ROOT_DIR,
         )
 
