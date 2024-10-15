@@ -1,0 +1,10 @@
+__run_id,__done,example_factor1,example_factor2,avg_cpu,avg_mem,codecarbon__emissions,codecarbon__energy_consumed
+run_0_repetition_0,DONE,example_treatment2,False, , ,1.4690333254703077e-08,5.489209876132409e-08
+run_1_repetition_0,DONE,example_treatment3,True, , ,1.4744168654882855e-08,5.50932608488198e-08
+run_2_repetition_0,DONE,example_treatment3,False, , ,1.4683317116534755e-08,5.486588216415225e-08
+run_0_repetition_1,DONE,example_treatment2,False, , ,2.6375238341489544e-08,9.855407381115731e-08
+run_1_repetition_1,DONE,example_treatment3,True, , ,1.8469072227718982e-08,6.901178613013497e-08
+run_2_repetition_1,DONE,example_treatment3,False, , ,1.4321742869072488e-08,5.351481892024006e-08
+run_0_repetition_2,DONE,example_treatment2,False, , ,1.510119234181037e-08,5.6427320406432834e-08
+run_1_repetition_2,DONE,example_treatment3,True, , ,1.4887284785308974e-08,5.562803052555086e-08
+run_2_repetition_2,DONE,example_treatment3,False, , ,2.6481914420908202e-08,9.895268109837084e-08
