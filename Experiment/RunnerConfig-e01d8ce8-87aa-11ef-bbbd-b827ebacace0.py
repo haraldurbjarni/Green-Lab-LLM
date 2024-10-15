@@ -48,6 +48,7 @@ class RunnerConfig:
         self.total_start_time = None  # For total experiment time tracking
         self.run_start_time = None  # For tracking individual run times
 
+
         # Initialize logging to file
         logging.basicConfig(filename='experiment_log.txt', level=logging.INFO,
                             format='%(asctime)s - %(message)s', filemode='w')
