@@ -11,13 +11,15 @@ from typing import Dict, List, Any, Optional
 from pathlib import Path
 from os.path import dirname, realpath
 import subprocess
+import os
+import output
 
 class RunnerConfig:
     ROOT_DIR = Path(dirname(realpath(__file__)))
 
     # ================================ USER SPECIFIC CONFIG ================================
     """The name of the experiment."""
-    name:                       str             = "new_runner_experiment5"
+    name:                       str             = "new_runner_experiment6"
 
     """The path in which Experiment Runner will create a folder with the name `self.name`, in order to store the
     results from this experiment. (Path does not need to exist - it will be created if necessary.)
@@ -84,9 +86,27 @@ class RunnerConfig:
         algorithm = context.run_variation['algorithm']
         llm  = context.run_variation['llm']
 
-        self.target = subprocess.Popen(['./BB/ChatGPT/sol.cpp'],
-            stdout=subprocess.PIPE, stderr=subprocess.PIPE, cwd=self.ROOT_DIR,
-        )
+        # Paths
+        cpp_file = os.path.join(self.ROOT_DIR, 'BB/ChatGPT/sol.cpp')  # Path to sol.cpp
+        executable_file = os.path.join(self.ROOT_DIR, 'BB/ChatGPT/sol')  # Path to the compiled executable
+
+        # Step 1: Compile the C++ code
+        try:
+            compile_process = subprocess.run(['g++', '-o', executable_file, cpp_file],
+                                             stdout=subprocess.PIPE, stderr=subprocess.PIPE, check=True)
+            output.console_log("Compilation successful!")
+        except subprocess.CalledProcessError as compile_error:
+            output.console_log(f"Compilation failed: {compile_error.stderr.decode()}")
+            return  # Exit if compilation fails
+
+        # Step 2: Execute the compiled file
+        try:
+            self.target = subprocess.Popen([executable_file],
+                                           stdout=subprocess.PIPE, stderr=subprocess.PIPE, cwd=self.ROOT_DIR)
+            output.console_log("Execution started successfully!")
+        except FileNotFoundError as exec_error:
+            output.console_log(f"Execution failed: {exec_error}")
+            return  # Exit if execution fails
 
         output.console_log("Config.start_run() called!")
 
