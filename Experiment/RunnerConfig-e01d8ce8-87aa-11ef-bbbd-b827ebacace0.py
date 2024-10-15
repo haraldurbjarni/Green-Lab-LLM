@@ -18,7 +18,7 @@ class RunnerConfig:
 
     # ================================ USER SPECIFIC CONFIG ================================
     """The name of the experiment."""
-    name:                       str             = "new_runner_experiment9"
+    name:                       str             = "new_runner_experiment11"
 
     """The path in which Experiment Runner will create a folder with the name `self.name`, in order to store the
     results from this experiment. (Path does not need to exist - it will be created if necessary.)
@@ -78,16 +78,25 @@ class RunnerConfig:
         output.console_log("Config.before_run() called!")
 
     def start_run(self, context: RunnerContext) -> None:
-        """Perform any activity required for starting the run here.
-        For example, starting the target system to measure.
-        Activities after starting the run should also be performed here."""
-
+        """Perform any activity required for starting the run here."""
         algorithm = context.run_variation['algorithm']
-        llm  = context.run_variation['llm']
+        llm = context.run_variation['llm']
+        current_path = os.getcwd()
+        output.console_log(f"Current working directory: {current_path}")
 
         # Paths
-        cpp_file = os.path.join('.\BB\ChatGPT\sol.cpp')  # Path to sol.cpp
-        executable_file = os.path.join('.\BB\ChatGPT\sol')  # Path to the compiled executable
+        cpp_file = os.path.join('./Experiment/BB/ChatGPT/sol.cpp')  # Path to sol.cpp
+        executable_file = os.path.join('./Experiment/BB/ChatGPT/sol')  # Path to the compiled executable
+
+        # Check if cpp_file exists
+        if not os.path.exists(cpp_file):
+            output.console_log(f"File not found: {cpp_file}")
+            return
+
+        # Create output directory if it doesn't exist
+        output_dir = os.path.dirname(executable_file)
+        if not os.path.exists(output_dir):
+            os.makedirs(output_dir)
 
         # Step 1: Compile the C++ code
         try:
@@ -97,6 +106,15 @@ class RunnerConfig:
         except subprocess.CalledProcessError as compile_error:
             output.console_log(f"Compilation failed: {compile_error.stderr.decode()}")
             return  # Exit if compilation fails
+
+        if os.path.exists(executable_file):
+            os.chmod(executable_file, 0o755)  # Ensure the executable has the correct permissions
+
+        # Check if executable exists
+        if not os.path.exists(executable_file):
+            output.console_log(f"Compiled executable not found: {executable_file}")
+            return
+
 
         # Step 2: Execute the compiled file
         try:
