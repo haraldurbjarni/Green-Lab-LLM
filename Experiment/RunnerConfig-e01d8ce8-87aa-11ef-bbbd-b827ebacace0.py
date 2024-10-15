@@ -18,7 +18,7 @@ class RunnerConfig:
 
     # ================================ USER SPECIFIC CONFIG ================================
     """The name of the experiment."""
-    name:                       str             = "new_runner_experiment8"
+    name:                       str             = "new_runner_experiment9"
 
     """The path in which Experiment Runner will create a folder with the name `self.name`, in order to store the
     results from this experiment. (Path does not need to exist - it will be created if necessary.)
@@ -86,8 +86,8 @@ class RunnerConfig:
         llm  = context.run_variation['llm']
 
         # Paths
-        cpp_file = os.path.join('./BB/ChatGPT/sol.cpp')  # Path to sol.cpp
-        executable_file = os.path.join('./BB/ChatGPT/sol')  # Path to the compiled executable
+        cpp_file = os.path.join('.\BB\ChatGPT\sol.cpp')  # Path to sol.cpp
+        executable_file = os.path.join('.\BB\ChatGPT\sol')  # Path to the compiled executable
 
         # Step 1: Compile the C++ code
         try:
