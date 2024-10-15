@@ -12,71 +12,69 @@ from pathlib import Path
 from os.path import dirname, realpath
 import subprocess
 import os
-import time  # Import the time module
+import time  # Import time for measuring durations
+import logging  # Import logging for writing to log files
 
 class RunnerConfig:
     ROOT_DIR = Path(dirname(realpath(__file__)))
 
     # ================================ USER SPECIFIC CONFIG ================================
     """The name of the experiment."""
-    name:                       str             = "new_runner_experiment11"
+    name: str = "new_runner_experiment11"
 
-    """The path in which Experiment Runner will create a folder with the name `self.name`, in order to store the
-    results from this experiment. (Path does not need to exist - it will be created if necessary.)
-    Output path defaults to the config file's path, inside the folder 'experiments'"""
-    results_output_path:        Path            = ROOT_DIR / 'experiments'
+    """Output path defaults to the config file's path, inside the folder 'experiments'"""
+    results_output_path: Path = ROOT_DIR / 'experiments'
 
-    """Experiment operation type. Unless you manually want to initiate each run, use `OperationType.AUTO`."""
-    operation_type:             OperationType   = OperationType.AUTO
+    """Experiment operation type."""
+    operation_type: OperationType = OperationType.AUTO
 
-    """The time Experiment Runner will wait after a run completes.
-    This can be essential to accommodate for cooldown periods on some systems."""
-    time_between_runs_in_ms:    int             = 1000
+    """The time Experiment Runner will wait after a run completes."""
+    time_between_runs_in_ms: int = 1000
 
-    # Dynamic configurations can be one-time satisfied here before the program takes the config as-is
-    # e.g. Setting some variable based on some criteria
     def __init__(self):
         """Executes immediately after program start, on config load"""
-
         EventSubscriptionController.subscribe_to_multiple_events([
             (RunnerEvents.BEFORE_EXPERIMENT, self.before_experiment),
-            (RunnerEvents.BEFORE_RUN       , self.before_run       ),
-            (RunnerEvents.START_RUN        , self.start_run        ),
+            (RunnerEvents.BEFORE_RUN, self.before_run),
+            (RunnerEvents.START_RUN, self.start_run),
             (RunnerEvents.START_MEASUREMENT, self.start_measurement),
-            (RunnerEvents.INTERACT         , self.interact         ),
-            (RunnerEvents.STOP_MEASUREMENT , self.stop_measurement ),
-            (RunnerEvents.STOP_RUN         , self.stop_run         ),
+            (RunnerEvents.INTERACT, self.interact),
+            (RunnerEvents.STOP_MEASUREMENT, self.stop_measurement),
+            (RunnerEvents.STOP_RUN, self.stop_run),
             (RunnerEvents.POPULATE_RUN_DATA, self.populate_run_data),
-            (RunnerEvents.AFTER_EXPERIMENT , self.after_experiment )
+            (RunnerEvents.AFTER_EXPERIMENT, self.after_experiment)
         ])
         self.run_table_model = None  # Initialized later
+        self.total_start_time = None  # For total experiment time tracking
+        self.run_start_time = None  # For tracking individual run times
 
+        # Initialize logging to file
+        logging.basicConfig(filename='experiment_log.txt', level=logging.INFO,
+                            format='%(asctime)s - %(message)s', filemode='w')
+        logging.info("Experiment started.")
         output.console_log("Custom config loaded")
 
     def create_run_table_model(self) -> RunTableModel:
-        """Create and return the run_table model here. A run_table is a List (rows) of tuples (columns),
-        representing each run performed"""
+        """Create and return the run_table model."""
         llm_factor = FactorModel("llm", ['ChatGPT', 'Claude', 'Gemeni', 'Llama', 'Mistral'])
         algorithm_factor = FactorModel("algorithm", ['BB', 'BFA', 'SWA'])
         self.run_table_model = RunTableModel(
             factors=[llm_factor, algorithm_factor],
-            exclude_variations=[
-            ],
+            exclude_variations=[],
             data_columns=['avg_cpu', 'avg_mem']
         )
         return self.run_table_model
 
     def before_experiment(self) -> None:
-        """Perform any activity required before starting the experiment here
-        Invoked only once during the lifetime of the program."""
-
+        """Activity before starting the experiment."""
         output.console_log("Config.before_experiment() called!")
+        self.total_start_time = time.time()  # Start the total time tracker
+        logging.info("Experiment started.")
 
     def before_run(self) -> None:
-        """Perform any activity required before starting a run.
-        No context is available here as the run is not yet active (BEFORE RUN)"""
-
+        """Activity before starting a run."""
         output.console_log("Config.before_run() called!")
+        self.run_start_time = time.time()  # Start the individual run time tracker
 
     def start_run(self, context: RunnerContext) -> None:
         """Perform any activity required for starting the run here."""
@@ -86,12 +84,12 @@ class RunnerConfig:
         output.console_log(f"Current working directory: {current_path}")
 
         # Use ROOT_DIR to build the path to 'sol'
-        cpp_file = os.path.join(self.ROOT_DIR, 'SWA/ChatGPT/sol.cpp')  # Path to sol.cpp
-        executable_file = os.path.join(self.ROOT_DIR, 'SWA/ChatGPT/sol')  # Path to the compiled executable
+        cpp_file = os.path.join(self.ROOT_DIR, 'SWA/ChatGPT/sol.cpp')
+        executable_file = os.path.join(self.ROOT_DIR, 'SWA/ChatGPT/sol')
 
-        # Check if cpp_file exists
         if not os.path.exists(cpp_file):
             output.console_log(f"File not found: {cpp_file}")
+            logging.error(f"File not found: {cpp_file}")
             return
 
         # Create output directory if it doesn't exist
@@ -99,34 +97,37 @@ class RunnerConfig:
         if not os.path.exists(output_dir):
             os.makedirs(output_dir)
 
-        # Step 1: Measure the compilation time
-        compile_start_time = time.time()  # Record start time
+        # Measure compilation time
+        compile_start_time = time.time()
         try:
             compile_process = subprocess.run(['g++', '-o', executable_file, cpp_file],
                                              stdout=subprocess.PIPE, stderr=subprocess.PIPE, check=True)
-            compile_end_time = time.time()  # Record end time
-            compile_duration = compile_end_time - compile_start_time  # Calculate duration
+            compile_end_time = time.time()
+            compile_duration = compile_end_time - compile_start_time
             output.console_log(f"Compilation successful! Time taken: {compile_duration:.2f} seconds")
+            logging.info(f"Compilation successful! Time taken: {compile_duration:.2f} seconds")
         except subprocess.CalledProcessError as compile_error:
             output.console_log(f"Compilation failed: {compile_error.stderr.decode()}")
-            return  # Exit if compilation fails
-
-        # Check if executable exists
-        if not os.path.exists(executable_file):
-            output.console_log(f"Compiled executable not found: {executable_file}")
+            logging.error(f"Compilation failed: {compile_error.stderr.decode()}")
             return
 
-        # Log that the executable exists
+        if not os.path.exists(executable_file):
+            output.console_log(f"Compiled executable not found: {executable_file}")
+            logging.error(f"Compiled executable not found: {executable_file}")
+            return
+
         output.console_log(f"Executable file found: {executable_file}")
 
-        # Step 2: Execute the compiled file
+        # Execute the compiled file
         try:
             self.target = subprocess.Popen([executable_file],
                                            stdout=subprocess.PIPE, stderr=subprocess.PIPE, cwd=self.ROOT_DIR)
             output.console_log("Execution started successfully!")
+            logging.info("Execution started successfully!")
         except FileNotFoundError as exec_error:
             output.console_log(f"Execution failed: {exec_error}")
-            return  # Exit if execution fails
+            logging.error(f"Execution failed: {exec_error}")
+            return
 
         output.console_log("Config.start_run() called!")
 
@@ -135,34 +136,31 @@ class RunnerConfig:
         output.console_log("Config.start_measurement() called!")
 
     def interact(self, context: RunnerContext) -> None:
-        """Perform any interaction with the running target system here, or block here until the target finishes."""
-
+        """Perform any interaction with the running target system here."""
         output.console_log("Config.interact() called!")
 
     def stop_measurement(self, context: RunnerContext) -> None:
         """Perform any activity here required for stopping measurements."""
-
         output.console_log("Config.stop_measurement called!")
 
     def stop_run(self, context: RunnerContext) -> None:
-        """Perform any activity here required for stopping the run.
-        Activities after stopping the run should also be performed here."""
-
-        output.console_log("Config.stop_run() called!")
+        """Perform any activity here required for stopping the run."""
+        run_end_time = time.time()
+        run_duration = run_end_time - self.run_start_time
+        output.console_log(f"Config.stop_run() called! Run time: {run_duration:.2f} seconds")
+        logging.info(f"Run ended. Run time: {run_duration:.2f} seconds")
 
     def populate_run_data(self, context: RunnerContext) -> Optional[Dict[str, SupportsStr]]:
-        """Parse and process any measurement data here.
-        You can also store the raw measurement data under `context.run_dir`
-        Returns a dictionary with keys `self.run_table_model.data_columns` and their values populated"""
-
+        """Parse and process any measurement data here."""
         output.console_log("Config.populate_run_data() called!")
         return None
 
     def after_experiment(self) -> None:
-        """Perform any activity required after stopping the experiment here
-        Invoked only once during the lifetime of the program."""
-
-        output.console_log("Config.after_experiment() called!")
+        """Perform any activity required after stopping the experiment."""
+        total_end_time = time.time()
+        total_duration = total_end_time - self.total_start_time
+        output.console_log(f"Config.after_experiment() called! Total experiment time: {total_duration:.2f} seconds")
+        logging.info(f"Experiment completed. Total time: {total_duration:.2f} seconds")
 
     # ================================ DO NOT ALTER BELOW THIS LINE ================================
     experiment_path:            Path             = None
