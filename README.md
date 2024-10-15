@@ -5,7 +5,10 @@ This repo contains an experiment measuring and comparing the energy efficiency o
 
 It uses experiment runner (TODO: ref to repo) and energieconfig () to measure the variables.
 
-Three algorithms were compared, the Branch and Bound (BB), Bellman Ford (BFA) and the Smith-Waterman algorithms (SWA). The code snippets, along with the
+Three algorithms were compared, the Branch and Bound (BB), Bellman Ford (BFA) and the Smith-Waterman algorithms (SWA). The code snippets, along with the copmiled binaries are located in the experiments folder, under their respective abbrieviations.
+
+To run the experiment you need to
+
 
 To use energy config you need to have cargo installed.
 
@@ -14,11 +17,21 @@ You can install cargo by
 ```bash
 curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
 ```
-and then add the following to your configuration file
+
+and then add the following to your configuration file (.bashrc or .zshrc)
 
 ```bash
 source $HOME/.cargo/env
 ```
+
+# (Optional) Compile energybriddge
+
+And then you need to compile the energiebridge module.
+```bash
+cargo build -r
+```
+make sure it's being compiled for the appropriate cpu architecture
+
 
 The binaries read from input files in the parent directory, which are generated from gen.py, the parameters there were selected for the experiments, if you want to change them you can run
 
