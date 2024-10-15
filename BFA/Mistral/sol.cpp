@@ -42,7 +42,8 @@ void bellmanFord(int V, vector<Edge> edges, vector<int> &dist) {
 
 int main() {
     int V, E;
-    cin >> V >> E;
+    ifstream in("../edges.txt");
+    in >> V >> E;
 
     vector<Edge> edges(E);
     for (auto &e : edges) {

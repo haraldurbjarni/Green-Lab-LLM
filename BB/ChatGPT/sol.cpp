@@ -2,6 +2,7 @@
 #include <queue>
 #include <vector>
 #include <fstream>
+#include <algorithm>
 
 using namespace std;
 
@@ -129,8 +130,8 @@ vector<int> readFile(const string &filename) {
 
 int main() {
     // Reading weights and values from files
-    vector<int> values = readFile("profit.txt");
-    vector<int> weights = readFile("weights.txt");
+    vector<int> values = readFile("../profit.txt");
+    vector<int> weights = readFile("../weight.txt");
 
     if (values.size() != weights.size()) {
         cerr << "Error: The number of values and weights must be the same." << endl;

@@ -122,7 +122,7 @@ int main() {
     int capacity = 50;  // Set your desired capacity
     Knapsack knapsack(capacity);
 
-    knapsack.readData("weight.txt", "profit.txt");
+    knapsack.readData("../weight.txt", "../profit.txt");
 
     int maxProfit = knapsack.solve();
     cout << "Maximum profit: " << maxProfit << endl;
