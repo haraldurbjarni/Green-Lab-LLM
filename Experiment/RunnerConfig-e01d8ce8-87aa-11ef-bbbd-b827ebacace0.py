@@ -15,7 +15,7 @@ import subprocess
 import os
 import time  # Import time for measuring durations
 import logging  # Import logging for writing to log files
-
+import shlex
 
 class RunnerConfig:
     ROOT_DIR = Path(dirname(realpath(__file__)))
@@ -64,14 +64,12 @@ class RunnerConfig:
 
     def create_run_table_model(self) -> RunTableModel:
         """Create and return the run_table model."""
-        llm_factor = FactorModel(
-            "llm", ["ChatGPT", "Claude", "Gemeni", "Llama", "Mistral"]
-        )
+        llm_factor = FactorModel("llm", ["ChatGPT", "Claude", "Gemeni", "Llama", "Mistral"])
         algorithm_factor = FactorModel("algorithm", ["BB", "BFA", "SWA"])
         self.run_table_model = RunTableModel(
             factors=[llm_factor, algorithm_factor],
             exclude_variations=[],
-            data_columns=["avg_cpu", "avg_mem", "total_energy"],
+            data_columns=["avg_cpu", "avg_mem", 'dram_energy', 'package_energy', 'pp0_energy', 'pp1_energy', "total_energy"],
         )
         return self.run_table_model
 
@@ -87,69 +85,69 @@ class RunnerConfig:
         self.run_start_time = time.time()  # Start the individual run time tracker
 
     def start_run(self, context: RunnerContext) -> None:
-        """Perform any activity required for starting the run here."""
-        algorithm = context.run_variation["algorithm"]
-        llm = context.run_variation["llm"]
-        current_path = os.getcwd()
-        output.console_log(f"Current working directory: {current_path}")
-
-        # Use ROOT_DIR to build the path to 'sol'
-        cpp_file = os.path.join(self.ROOT_DIR, f"{algorithm}/{llm}/sol.cpp")
-        executable_file = os.path.join(self.ROOT_DIR, f"{algorithm}/{llm}/sol")
-
-        if not os.path.exists(cpp_file):
-            output.console_log(f"File not found: {cpp_file}")
-            logging.error(f"File not found: {cpp_file}")
-            return
-
-        # Create output directory if it doesn't exist
-        output_dir = os.path.dirname(executable_file)
-        if not os.path.exists(output_dir):
-            os.makedirs(output_dir)
-
-        # Measure compilation time
-        compile_start_time = time.time()
-        try:
-            compile_process = subprocess.run(
-                ["g++", "-o", executable_file, cpp_file],
-                stdout=subprocess.PIPE,
-                stderr=subprocess.PIPE,
-                check=True,
-            )
-            compile_end_time = time.time()
-            compile_duration = compile_end_time - compile_start_time
-            output.console_log(
-                f"Compilation successful! Time taken: {compile_duration:.2f} seconds"
-            )
-            logging.info(
-                f"Compilation successful! Time taken: {compile_duration:.2f} seconds"
-            )
-        except subprocess.CalledProcessError as compile_error:
-            output.console_log(f"Compilation failed: {compile_error.stderr.decode()}")
-            logging.error(f"Compilation failed: {compile_error.stderr.decode()}")
-            return
-
-        if not os.path.exists(executable_file):
-            output.console_log(f"Compiled executable not found: {executable_file}")
-            logging.error(f"Compiled executable not found: {executable_file}")
-            return
-
-        output.console_log(f"Executable file found: {executable_file}")
-
-        # Execute the compiled file
-        try:
-            self.target = subprocess.Popen(
-                [executable_file],
-                stdout=subprocess.PIPE,
-                stderr=subprocess.PIPE,
-                cwd=self.ROOT_DIR,
-            )
-            output.console_log("Execution started successfully!")
-            logging.info("Execution started successfully!")
-        except FileNotFoundError as exec_error:
-            output.console_log(f"Execution failed: {exec_error}")
-            logging.error(f"Execution failed: {exec_error}")
-            return
+        # """Perform any activity required for starting the run here."""
+        # algorithm = context.run_variation["algorithm"]
+        # llm = context.run_variation["llm"]
+        # current_path = os.getcwd()
+        # output.console_log(f"Current working directory: {current_path}")
+        #
+        # # Use ROOT_DIR to build the path to 'sol'
+        # cpp_file = os.path.join(self.ROOT_DIR, f"{algorithm}/{llm}/sol.cpp")
+        # executable_file = os.path.join(self.ROOT_DIR, f"{algorithm}/{llm}/sol")
+        #
+        # if not os.path.exists(cpp_file):
+        #     output.console_log(f"File not found: {cpp_file}")
+        #     logging.error(f"File not found: {cpp_file}")
+        #     return
+        #
+        # # Create output directory if it doesn't exist
+        # output_dir = os.path.dirname(executable_file)
+        # if not os.path.exists(output_dir):
+        #     os.makedirs(output_dir)
+        #
+        # # Measure compilation time
+        # compile_start_time = time.time()
+        # try:
+        #     compile_process = subprocess.run(
+        #         ["g++", "-o", executable_file, cpp_file],
+        #         stdout=subprocess.PIPE,
+        #         stderr=subprocess.PIPE,
+        #         check=True,
+        #     )
+        #     compile_end_time = time.time()
+        #     compile_duration = compile_end_time - compile_start_time
+        #     output.console_log(
+        #         f"Compilation successful! Time taken: {compile_duration:.2f} seconds"
+        #     )
+        #     logging.info(
+        #         f"Compilation successful! Time taken: {compile_duration:.2f} seconds"
+        #     )
+        # except subprocess.CalledProcessError as compile_error:
+        #     output.console_log(f"Compilation failed: {compile_error.stderr.decode()}")
+        #     logging.error(f"Compilation failed: {compile_error.stderr.decode()}")
+        #     return
+        #
+        # if not os.path.exists(executable_file):
+        #     output.console_log(f"Compiled executable not found: {executable_file}")
+        #     logging.error(f"Compiled executable not found: {executable_file}")
+        #     return
+        #
+        # output.console_log(f"Executable file found: {executable_file}")
+        #
+        # # Execute the compiled file
+        # try:
+        #     self.target = subprocess.Popen(
+        #         [executable_file],
+        #         stdout=subprocess.PIPE,
+        #         stderr=subprocess.PIPE,
+        #         cwd=self.ROOT_DIR,
+        #     )
+        #     output.console_log("Execution started successfully!")
+        #     logging.info("Execution started successfully!")
+        # except FileNotFoundError as exec_error:
+        #     output.console_log(f"Execution failed: {exec_error}")
+        #     logging.error(f"Execution failed: {exec_error}")
+        #     return
 
         output.console_log("Config.start_run() called!")
 
@@ -159,14 +157,15 @@ class RunnerConfig:
         algorithm = context.run_variation["algorithm"]
 
         profiler_cmd = f'sudo energibridge \
-                        --llm {llm} \
-                        --algorithm {algorithm} \
+                        --interval {0.5} \
                         --max-execution 20 \
                         --output {context.run_dir / "energibridge.csv"} \
                         --summary \
-                        python3 examples/energibridge-profiling/primer.py'
+                        ./{algorithm}/{llm}/sol'
 
         output.console_log("Config.start_measurement() called!")
+        energibridge_log = open(f'{context.run_dir}/energibridge.log', 'w')
+        self.profiler = subprocess.Popen(shlex.split(profiler_cmd), stdout=energibridge_log)
 
     def interact(self, context: RunnerContext) -> None:
         """Perform any interaction with the running target system here."""
