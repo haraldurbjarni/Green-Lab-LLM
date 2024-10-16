@@ -5,6 +5,7 @@
 #include <algorithm>
 
 using namespace std;
+namespace fs = std::filesystem;
 
 // Structure to represent an item (weight, value)
 struct Item {
@@ -130,6 +131,7 @@ vector<int> readFile(const string &filename) {
 
 int main() {
     // Reading weights and values from files
+    cout << fs::absolute("profit.txt")
     vector<int> values = readFile("../profit.txt");
     vector<int> weights = readFile("../weight.txt");
 
