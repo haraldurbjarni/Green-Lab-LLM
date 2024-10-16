@@ -163,11 +163,11 @@ class RunnerConfig:
                         --max-execution 20 \
                         --output {context.run_dir / "energibridge.csv"} \
                         --summary \
-                        ./{algorithm}/{llm}/sol'
+                        {algorithm}/{llm}/sol'
 
         output.console_log("Config.start_measurement() called!")
         energibridge_log = open(f'{context.run_dir}/energibridge.log', 'w')
-        output.console_log(f'test')
+        output.console_log(f'{algorithm}/{llm}/sol')
         self.profiler = subprocess.Popen(shlex.split(profiler_cmd), stdout=energibridge_log)
 
     def interact(self, context: RunnerContext) -> None:
