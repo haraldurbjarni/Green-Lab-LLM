@@ -167,6 +167,7 @@ class RunnerConfig:
 
         output.console_log("Config.start_measurement() called!")
         energibridge_log = open(f'{context.run_dir}/energibridge.log', 'w')
+        output.console_log(f'test')
         self.profiler = subprocess.Popen(shlex.split(profiler_cmd), stdout=energibridge_log)
 
     def interact(self, context: RunnerContext) -> None:
