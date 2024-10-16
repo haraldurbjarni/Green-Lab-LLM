@@ -192,15 +192,17 @@ class RunnerConfig:
     def populate_run_data(self, context: RunnerContext) -> Optional[Dict[str, SupportsStr]]:
         output.console_log("Config.populate_run_data() called!")
         """Parse and process any measurement data here."""
-        # # Read the powerjoular CSV file
-        # df = pd.read_csv(context.run_dir / f"energibridge.csv")
-        # run_data = {
-        #     'dram_energy': round(df['DRAM_ENERGY (J)'].sum(), 3),
-        #     'package_energy': round(df['PACKAGE_ENERGY (J)'].sum(), 3),
-        #     'pp0_energy': round(df['PP0_ENERGY (J)'].sum(), 3),
-        #     'pp1_energy': round(df['PP1_ENERGY (J)'].sum(), 3),
-        # }
-        # return run_data
+
+        output.console_log(context.run_dir / f"energibridge.csv")
+        # Read the powerjoular CSV file
+        df = pd.read_csv(context.run_dir / f"energibridge.csv")
+        run_data = {
+            'dram_energy': round(df['DRAM_ENERGY (J)'].sum(), 3),
+            'package_energy': round(df['PACKAGE_ENERGY (J)'].sum(), 3),
+            'pp0_energy': round(df['PP0_ENERGY (J)'].sum(), 3),
+            'pp1_energy': round(df['PP1_ENERGY (J)'].sum(), 3),
+        }
+        return run_data
 
     def after_experiment(self) -> None:
         """Perform any activity required after stopping the experiment."""
