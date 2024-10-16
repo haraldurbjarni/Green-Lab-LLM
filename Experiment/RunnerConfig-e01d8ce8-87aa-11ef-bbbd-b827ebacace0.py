@@ -173,6 +173,7 @@ class RunnerConfig:
 
     def stop_measurement(self, context: RunnerContext) -> None:
         """Perform any activity here required for stopping measurements."""
+        self.profiler.wait()
         output.console_log("Config.stop_measurement called!")
 
     def stop_run(self, context: RunnerContext) -> None:
@@ -192,9 +193,10 @@ class RunnerConfig:
         # Read the powerjoular CSV file
         df = pd.read_csv(context.run_dir / f"energibridge.csv")
         run_data = {
-            "avg_cpu": round(df["CPU Utilization"].sum(), 3),
-            "total_energy": round(df["CPU Power"].sum(), 3),
-            "avg_mem": round(df["Memory Utilization"].sum(), 3),
+            'dram_energy': round(df['DRAM_ENERGY (J)'].sum(), 3),
+            'package_energy': round(df['PACKAGE_ENERGY (J)'].sum(), 3),
+            'pp0_energy': round(df['PP0_ENERGY (J)'].sum(), 3),
+            'pp1_energy': round(df['PP1_ENERGY (J)'].sum(), 3),
         }
         return run_data
 
