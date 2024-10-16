@@ -140,7 +140,7 @@ int main() {
     // Print the absolute path
     std::cout << "Absolute path: " << absolute_path << std::endl;
 
-    vector<int> values = readFile("../profit.txt");
+    vector<int> values = readFile(absolute_path);
     vector<int> weights = readFile("../weight.txt");
 
     if (values.size() != weights.size()) {
