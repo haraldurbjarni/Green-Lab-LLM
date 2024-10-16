@@ -141,7 +141,7 @@ int main() {
     std::cout << "Absolute path: " << absolute_path << std::endl;
 
     vector<int> values = readFile(absolute_path);
-    vector<int> weights = readFile("../weight.txt");
+    vector<int> weights = readFile("./Experiment/BB/weight.txt");
 
     if (values.size() != weights.size()) {
         cerr << "Error: The number of values and weights must be the same." << endl;
