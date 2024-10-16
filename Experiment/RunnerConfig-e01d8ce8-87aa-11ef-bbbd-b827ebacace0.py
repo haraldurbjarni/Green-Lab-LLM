@@ -157,13 +157,7 @@ class RunnerConfig:
         llm = context.run_variation["llm"]
         algorithm = context.run_variation["algorithm"]
 
-        output.console_log(f'{context.run_dir}/{algorithm}/{llm}/sol')
-
-        # Get the current working directory
-        current_path = os.getcwd()
-
-        # Print the current path
-        output.console_log("Current working directory:", current_path)
+        output.console_log(os.getcwd())
 
         profiler_cmd = f'energibridge \
                         --interval 200 \
