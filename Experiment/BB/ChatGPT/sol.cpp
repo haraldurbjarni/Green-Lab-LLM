@@ -3,9 +3,9 @@
 #include <vector>
 #include <fstream>
 #include <algorithm>
+#include <filesystem>
 
 using namespace std;
-namespace fs = std::filesystem;
 
 // Structure to represent an item (weight, value)
 struct Item {
@@ -131,7 +131,15 @@ vector<int> readFile(const string &filename) {
 
 int main() {
     // Reading weights and values from files
-    cout << fs::absolute("profit.txt")
+    // Create a filesystem path object
+    std::filesystem::path path(relative_path);
+
+    // Get the absolute path
+    std::filesystem::path absolute_path = std::filesystem::absolute(path);
+
+    // Print the absolute path
+    std::cout << "Absolute path: " << absolute_path << std::endl;
+
     vector<int> values = readFile("../profit.txt");
     vector<int> weights = readFile("../weight.txt");
 
