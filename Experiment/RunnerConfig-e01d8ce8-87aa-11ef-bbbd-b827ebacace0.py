@@ -156,12 +156,14 @@ class RunnerConfig:
         llm = context.run_variation["llm"]
         algorithm = context.run_variation["algorithm"]
 
-        profiler_cmd = f'sudo energibridge \
+        output.console_log(f'{context.run_dir}/{algorithm}/{llm}/sol')
+
+        profiler_cmd = f'energibridge \
                         --interval 200 \
                         --max-execution 20 \
                         --output {context.run_dir / "energibridge.csv"} \
                         --summary \
-                        {context.run_dir} /{algorithm}/{llm}/sol'
+                        ./{algorithm}/{llm}/sol'
 
         output.console_log("Config.start_measurement() called!")
         energibridge_log = open(f'{context.run_dir}/energibridge.log', 'w')
