@@ -156,7 +156,7 @@ class RunnerConfig:
         llm = context.run_variation["llm"]
         algorithm = context.run_variation["algorithm"]
 
-        profiler_cmd = f'energibridge \
+        profiler_cmd = f'sudo energibridge \
                         --interval 200 \
                         --max-execution 20 \
                         --output {context.run_dir / "energibridge.csv"} \
