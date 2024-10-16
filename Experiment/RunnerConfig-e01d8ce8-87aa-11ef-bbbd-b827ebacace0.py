@@ -164,7 +164,7 @@ class RunnerConfig:
                         --max-execution 20 \
                         --output {context.run_dir / "energibridge.csv"} \
                         --summary \
-                        /Experiment/{algorithm}/{llm}/sol'
+                        ./Experiment/{algorithm}/{llm}/sol'
 
         output.console_log("Config.start_measurement() called!")
         energibridge_log = open(f'{context.run_dir}/energibridge.log', 'w')
