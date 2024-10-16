@@ -132,7 +132,7 @@ vector<int> readFile(const string &filename) {
 int main() {
     // Reading weights and values from files
     // Create a filesystem path object
-    std::filesystem::path path("../profit.tx");
+    std::filesystem::path path("../profit.txt");
 
     // Get the absolute path
     std::filesystem::path absolute_path = std::filesystem::absolute(path);
