@@ -73,7 +73,7 @@ class RunnerConfig:
             exclude_variations=[],
             data_columns=["cpu_freq_0", "cpu_freq_1", "cpu_freq_2", "cpu_freq_3",
                           "cpu_usage_0", "cpu_usage_1","cpu_usage_2", "cpu_usage_3",
-                          "total_memory", "used_memory", "total_swap", "used_swap"
+                          "total_memory", "used_memory", "total_swap", "used_swap",
                           "dram_energy", "package_energy", "pp0_energy", "pp1_energy",
                           "run_time"],
         )
@@ -218,7 +218,8 @@ class RunnerConfig:
             'total_memory': round(df['TOTAL_MEMORY'].mean(), 2),
             'used_memory': round(df['USED_MEMORY'].mean(), 2),
             'total_swap': round(df['TOTAL_SWAP'].mean(), 2),
-            'used_swap': round(df['USED_SWAP'].mean(), 2)
+            'used_swap': round(df['USED_SWAP'].mean(), 2),
+            'run_time': self.run_time
         }
         return run_data
 
