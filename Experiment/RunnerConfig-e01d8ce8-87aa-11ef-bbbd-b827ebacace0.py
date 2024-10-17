@@ -52,6 +52,7 @@ class RunnerConfig:
         self.run_table_model = None  # Initialized later
         self.total_start_time = None  # For total experiment time tracking
         self.run_start_time = None  # For tracking individual run times
+        self.run_time = None
 
         # Initialize logging to file
         logging.basicConfig(
@@ -70,7 +71,11 @@ class RunnerConfig:
         self.run_table_model = RunTableModel(
             factors=[llm_factor, algorithm_factor],
             exclude_variations=[],
-            data_columns=["avg_cpu", "avg_mem", 'dram_energy', 'package_energy', 'pp0_energy', 'pp1_energy', "total_energy"],
+            data_columns=["cpu_freq_0", "cpu_freq_1", "cpu_freq_2", "cpu_freq_3",
+                          "cpu_usage_0", "cpu_usage_1","cpu_usage_2", "cpu_usage_3",
+                          "total_memory", "used_memory", "total_swap", "used_swap"
+                          "dram_energy", "package_energy", "pp0_energy", "pp1_energy",
+                          "run_time"],
         )
         return self.run_table_model
 
@@ -160,7 +165,7 @@ class RunnerConfig:
         output.console_log(f'/home/mark/greenlab/experiment-runner/examples/Green-Lab-LLM/Experiment/{algorithm}/{llm}/sol')
 
         profiler_cmd = f'energibridge \
-                        --interval 200 \
+                        --interval 20 \
                         --max-execution 20 \
                         --output {context.run_dir / "energibridge.csv"} \
                         --summary \
@@ -184,6 +189,7 @@ class RunnerConfig:
         """Perform any activity here required for stopping the run."""
         run_end_time = time.time()
         run_duration = run_end_time - self.run_start_time
+        self.run_time = run_duration
         output.console_log(
             f"Config.stop_run() called! Run time: {run_duration:.2f} seconds"
         )
@@ -193,14 +199,26 @@ class RunnerConfig:
         output.console_log("Config.populate_run_data() called!")
         """Parse and process any measurement data here."""
 
-        output.console_log(context.run_dir / f"energibridge.csv")
         # Read the powerjoular CSV file
         df = pd.read_csv(context.run_dir / f"energibridge.csv")
+
         run_data = {
             'dram_energy': round(df['DRAM_ENERGY (J)'].sum(), 3),
             'package_energy': round(df['PACKAGE_ENERGY (J)'].sum(), 3),
             'pp0_energy': round(df['PP0_ENERGY (J)'].sum(), 3),
             'pp1_energy': round(df['PP1_ENERGY (J)'].sum(), 3),
+            'cpu_freq_0': round(df['CPU_FREQUENCY_0'].mean(), 2),
+            'cpu_freq_1': round(df['CPU_FREQUENCY_1'].mean(), 2),
+            'cpu_freq_2': round(df['CPU_FREQUENCY_2'].mean(), 2),
+            'cpu_freq_3': round(df['CPU_FREQUENCY_3'].mean(), 2),
+            'cpu_usage_0': round(df['CPU_USAGE_0'].mean(), 2),
+            'cpu_usage_1': round(df['CPU_USAGE_1'].mean(), 2),
+            'cpu_usage_2': round(df['CPU_USAGE_2'].mean(), 2),
+            'cpu_usage_3': round(df['CPU_USAGE_3'].mean(), 2)
+            'total_memory': round(df['TOTAL_MEMORY'].mean(), 2),
+            'used_memory': round(df['USED_MEMORY'].mean(), 2),
+            'total_swap': round(df['TOTAL_SWAP'].mean(), 2),
+            'used_swap': round(df['USED_SWAP'].mean(), 2)
         }
         return run_data
 
