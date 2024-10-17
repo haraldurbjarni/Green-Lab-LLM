@@ -214,7 +214,7 @@ class RunnerConfig:
             'cpu_usage_0': round(df['CPU_USAGE_0'].mean(), 2),
             'cpu_usage_1': round(df['CPU_USAGE_1'].mean(), 2),
             'cpu_usage_2': round(df['CPU_USAGE_2'].mean(), 2),
-            'cpu_usage_3': round(df['CPU_USAGE_3'].mean(), 2)
+            'cpu_usage_3': round(df['CPU_USAGE_3'].mean(), 2),
             'total_memory': round(df['TOTAL_MEMORY'].mean(), 2),
             'used_memory': round(df['USED_MEMORY'].mean(), 2),
             'total_swap': round(df['TOTAL_SWAP'].mean(), 2),
