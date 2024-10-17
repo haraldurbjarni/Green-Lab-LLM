@@ -121,8 +121,8 @@ void traceback(const std::vector<std::vector<Cell>>& matrix,
 }
 
 int main() {
-    std::string seq1 = readSequenceFromFile("../seq1.txt");
-    std::string seq2 = readSequenceFromFile("../seq2.txt");
+    std::string seq1 = readSequenceFromFile("./Experiment/SWA/seq1.txt");
+    std::string seq2 = readSequenceFromFile("./Experiment/SWA/seq2.txt");
 
     if (seq1.empty() || seq2.empty()) {
         std::cerr << "Error: One or both sequence files are empty or couldn't be read." << std::endl;

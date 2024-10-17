@@ -93,8 +93,8 @@ string read_sequence_from_file(const string &filename) {
 
 int main() {
 	// Read sequences from files
-	string seq1 = read_sequence_from_file("seq1.txt");
-	string seq2 = read_sequence_from_file("seq2.txt");
+	string seq1 = read_sequence_from_file("./Experiment/SWA/seq1.txt");
+	string seq2 = read_sequence_from_file("./Experiment/SWA/seq2.txt");
 
 	auto result = smith_waterman(seq1, seq2);
 

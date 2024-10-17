@@ -147,9 +147,7 @@ int main() {
         items[i].weight = weights[i];
     }
 
-    int W;
-    cout << "Enter the capacity of the knapsack: ";
-    cin >> W;
+    int W = 50;
 
     int max_profit = knapsackBranchAndBound(items, W);
 

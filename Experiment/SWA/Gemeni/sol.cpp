@@ -79,7 +79,7 @@ int main() {
     string seq1, seq2;
 
     // Read seq1 from "seq1.txt"
-    ifstream seq1File("../seq1.txt");
+    ifstream seq1File("./Experiment/SWA/seq1.txt");
     if (seq1File.is_open()) {
         getline(seq1File, seq1); // Read the entire line as seq1
         seq1File.close();
@@ -89,7 +89,7 @@ int main() {
     }
 
     // Read seq2 from "seq2.txt"
-    ifstream seq2File("../seq2.txt");
+    ifstream seq2File("./Experiment/SWA/seq2.txt");
     if (seq2File.is_open()) {
         getline(seq2File, seq2); // Read the entire line as seq2
         seq2File.close();

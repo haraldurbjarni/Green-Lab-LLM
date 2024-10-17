@@ -42,7 +42,7 @@ void bellmanFord(int V, vector<Edge> edges, vector<int> &dist) {
 
 int main() {
     int V, E;
-    ifstream in("../edges.txt");
+    ifstream in("./Experiment/BFA/edges.txt");
     in >> V >> E;
 
     vector<Edge> edges(E);

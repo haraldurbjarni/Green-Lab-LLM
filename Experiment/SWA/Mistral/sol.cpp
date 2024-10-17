@@ -86,8 +86,8 @@ std::vector<std::vector<int>> smithWaterman(const std::string& seq1, const std::
     return matrix;
 }
 int main() {
-    std::ifstream file1("../seq1.txt");
-    std::ifstream file2("../seq2.txt");
+    std::ifstream file1("./Experiment/SWA/seq1.txt");
+    std::ifstream file2("./Experiment/SWA/seq2.txt");
 
     if (!file1.is_open() || !file2.is_open()) {
         std::cerr << "Error opening files." << std::endl;
