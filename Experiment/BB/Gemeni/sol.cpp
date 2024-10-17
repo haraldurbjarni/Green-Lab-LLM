@@ -128,7 +128,7 @@ int main() {
 
   n = profit.size();
 
-  int W = 50;
+  W = 50;
 
   int maxProfit = knapsack(W, profit, weight, n);
 
