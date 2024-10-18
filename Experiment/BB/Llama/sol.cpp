@@ -104,7 +104,7 @@ void printResults(const Node& result) {
 
 int main() {
     std::string filenameWeight = "./Experiment/BB/weight.txt";
-    std::string filenameProfit = "../Experiment/BB/profit.txt";
+    std::string filenameProfit = "./Experiment/BB/profit.txt";
 
     std::vector<int> weights = readWeights(filenameWeight);
     std::vector<int> profits = readProfits(filenameProfit);
