@@ -68,7 +68,7 @@ class RunnerConfig:
         """Create and return the run_table model."""
         llm_factor = FactorModel("llm", ["ChatGPT", "Claude", "Gemeni", "Llama", "Mistral"])
         algorithm_factor = FactorModel("algorithm", ["BB", "BFA", "SWA"])
-        run_factor = FactorModel([0, 1, 2])
+        run_factor = FactorModel("run", [0, 1, 2])
         self.run_table_model = RunTableModel(
             factors=[run_factor, llm_factor, algorithm_factor],
             exclude_variations=[],
