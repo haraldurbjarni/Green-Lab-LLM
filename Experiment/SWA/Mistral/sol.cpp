@@ -66,12 +66,13 @@ std::vector<std::vector<int>> smithWaterman(const std::string& seq1, const std::
             alignment[i] = j;
             --i;
             --j;
-        } else if (matrix[i - 1][j] > matrix[i][j - 1]) {
+        } else if (matrix[i - 1][j] >= matrix[i][j - 1]) {  // Ensure that one of i or j is always decremented
             --i;
         } else {
             --j;
         }
     }
+
 
     std::string alignmentString;
     for (int index : alignment) {
