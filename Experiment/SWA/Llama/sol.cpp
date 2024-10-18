@@ -91,8 +91,8 @@ int smithWaterman(const std::string& seq1, const std::string& seq2) {
 }
 
 int main() {
-    std::string seq1 = readSequence("../seq1.txt");
-    std::string seq2 = readSequence("../seq2.txt");
+    std::string seq1 = readSequence("./Experiment/SWA/seq1.txt");
+    std::string seq2 = readSequence("./Experiment/SWA/seq2.txt");
 
     int score = smithWaterman(seq1, seq2);
     std::cout << "Maximum score: " << score << std::endl;

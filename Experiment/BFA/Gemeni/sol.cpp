@@ -49,7 +49,7 @@ int main() {
   vector<Edge> edges;
 
   // Read graph data from file
-  ifstream graphFile("../edges.txt");
+  ifstream graphFile("./Experiment/BFA/edges.txt");
   if (graphFile.is_open()) {
     graphFile >> V >> E;
     for (int i = 0; i < E; i++) {

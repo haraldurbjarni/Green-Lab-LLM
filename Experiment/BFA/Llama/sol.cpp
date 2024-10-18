@@ -94,7 +94,7 @@ std::vector<std::vector<int>> findShortestPath(const std::vector<Edge>& graph, i
 }
 
 int main() {
-    std::string filename = "../edges.txt";
+    std::string filename = "./Experiment/BFA/edges.txt";
     std::vector<Edge> graph = readGraphFromFile(filename);
     int source = 0;
     int destination = graph.size() - 1;

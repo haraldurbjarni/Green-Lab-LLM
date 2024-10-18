@@ -57,7 +57,7 @@ std::vector<std::vector<int>> smithWaterman(const std::string& seq1, const std::
         }
     }
 
-    std::vector<int> alignment(bestScoreIndex1 + 1);
+    std::vector<int> alignment(len1);
     int i = bestScoreIndex1;
     int j = bestScoreIndex2;
 
@@ -66,16 +66,19 @@ std::vector<std::vector<int>> smithWaterman(const std::string& seq1, const std::
             alignment[i] = j;
             --i;
             --j;
-        } else if (matrix[i - 1][j] > matrix[i][j - 1]) {
+        } else if (matrix[i - 1][j] >= matrix[i][j - 1]) {  // Ensure that one of i or j is always decremented
             --i;
         } else {
             --j;
         }
     }
 
+
     std::string alignmentString;
     for (int index : alignment) {
-        alignmentString += seq1[index - 1];
+        if (index > 0) {
+            alignmentString += seq1[index - 1];  // Ensure index > 0
+        }
     }
     std::reverse(alignmentString.begin(), alignmentString.end());
 
@@ -86,8 +89,8 @@ std::vector<std::vector<int>> smithWaterman(const std::string& seq1, const std::
     return matrix;
 }
 int main() {
-    std::ifstream file1("../seq1.txt");
-    std::ifstream file2("../seq2.txt");
+    std::ifstream file1("./Experiment/SWA/seq1.txt");
+    std::ifstream file2("./Experiment/SWA/seq2.txt");
 
     if (!file1.is_open() || !file2.is_open()) {
         std::cerr << "Error opening files." << std::endl;

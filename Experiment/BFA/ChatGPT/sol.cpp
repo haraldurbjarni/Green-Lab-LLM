@@ -71,7 +71,7 @@ int main() {
     int V, E;
 
     // Read edges from file
-    string filename = "../edges.txt"; // Your file name
+    string filename = "./Experiment/BFA/edges.txt"; // Your file name
     vector<Edge> edges = readEdgesFromFile(filename, V, E);
 
     // Perform Bellman-Ford algorithm

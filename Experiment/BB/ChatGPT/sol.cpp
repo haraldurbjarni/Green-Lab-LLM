@@ -3,6 +3,7 @@
 #include <vector>
 #include <fstream>
 #include <algorithm>
+#include <filesystem>
 
 using namespace std;
 
@@ -129,9 +130,8 @@ vector<int> readFile(const string &filename) {
 }
 
 int main() {
-    // Reading weights and values from files
-    vector<int> values = readFile("../profit.txt");
-    vector<int> weights = readFile("../weight.txt");
+    vector<int> values = readFile("./Experiment/BB/profit.txt");
+    vector<int> weights = readFile("./Experiment/BB/weight.txt");
 
     if (values.size() != weights.size()) {
         cerr << "Error: The number of values and weights must be the same." << endl;
@@ -147,9 +147,7 @@ int main() {
         items[i].weight = weights[i];
     }
 
-    int W;
-    cout << "Enter the capacity of the knapsack: ";
-    cin >> W;
+    int W = 50;
 
     int max_profit = knapsackBranchAndBound(items, W);
 

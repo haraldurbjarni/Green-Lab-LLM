@@ -89,7 +89,7 @@ public:
 };
 
 int main() {
-    std::string filename = "../edges.txt";
+    std::string filename = "./Experiment/BFA/edges.txt";
     Graph graph(filename);
 
     int source = 0; // Starting vertex

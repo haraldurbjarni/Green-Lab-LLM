@@ -95,7 +95,7 @@ int main() {
   int n; // Number of items
 
   // Read profit from "profit.txt"
-  ifstream profitFile("../profit.txt");
+  ifstream profitFile("./Experiment/BB/profit.txt");
   if (profitFile.is_open()) {
     int p;
     while (profitFile >> p) {
@@ -108,7 +108,7 @@ int main() {
   }
 
   // Read weight from "weight.txt"
-  ifstream weightFile("../weight.txt");
+  ifstream weightFile("./Experiment/BB/weight.txt");
   if (weightFile.is_open()) {
     int w;
     while (weightFile >> w) {
@@ -128,8 +128,7 @@ int main() {
 
   n = profit.size();
 
-  cout << "Enter the maximum weight capacity (W): ";
-  cin >> W;
+  W = 50;
 
   int maxProfit = knapsack(W, profit, weight, n);
 

@@ -85,8 +85,8 @@ private:
 };
 
 int main() {
-    Knapsack knapsack(10);
-    knapsack.readData("../weight.txt", "../profit.txt");
+    Knapsack knapsack(50);
+    knapsack.readData("./Experiment/BB/weight.txt", "./Experiment/BB/profit.txt");
     knapsack.solve();
     return 0;
 }
