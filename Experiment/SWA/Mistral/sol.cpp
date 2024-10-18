@@ -57,7 +57,7 @@ std::vector<std::vector<int>> smithWaterman(const std::string& seq1, const std::
         }
     }
 
-    std::vector<int> alignment(bestScoreIndex1 + 1);
+    std::vector<int> alignment(len1);
     int i = bestScoreIndex1;
     int j = bestScoreIndex2;
 
@@ -75,7 +75,9 @@ std::vector<std::vector<int>> smithWaterman(const std::string& seq1, const std::
 
     std::string alignmentString;
     for (int index : alignment) {
-        alignmentString += seq1[index - 1];
+        if (index > 0) {
+            alignmentString += seq1[index - 1];  // Ensure index > 0
+        }
     }
     std::reverse(alignmentString.begin(), alignmentString.end());
 
