@@ -1,18 +1,18 @@
-2024-10-18 01:53:26,370 - Experiment started.
-2024-10-18 01:53:26,409 - Experiment started.
-2024-10-18 01:53:46,740 - Run ended. Run time: 20.33 seconds
-2024-10-18 01:53:48,115 - Run ended. Run time: 0.35 seconds
-2024-10-18 01:54:03,845 - Run ended. Run time: 14.70 seconds
-2024-10-18 01:54:25,203 - Run ended. Run time: 20.34 seconds
-2024-10-18 01:54:26,590 - Run ended. Run time: 0.37 seconds
-2024-10-18 01:54:40,733 - Run ended. Run time: 13.11 seconds
-2024-10-18 01:54:42,097 - Run ended. Run time: 0.35 seconds
-2024-10-18 01:54:43,492 - Run ended. Run time: 0.36 seconds
-2024-10-18 01:54:53,285 - Run ended. Run time: 8.76 seconds
-2024-10-18 01:54:54,662 - Run ended. Run time: 0.36 seconds
-2024-10-18 01:55:16,029 - Run ended. Run time: 20.33 seconds
-2024-10-18 01:55:24,949 - Run ended. Run time: 7.90 seconds
-2024-10-18 01:55:26,339 - Run ended. Run time: 0.37 seconds
-2024-10-18 01:55:47,720 - Run ended. Run time: 20.35 seconds
-2024-10-18 01:55:52,887 - Run ended. Run time: 4.12 seconds
-2024-10-18 01:55:53,905 - Experiment completed. Total time: 147.49 seconds
+2024-10-18 02:00:11,340 - Experiment started.
+2024-10-18 02:00:11,379 - Experiment started.
+2024-10-18 02:00:31,743 - Run ended. Run time: 20.36 seconds
+2024-10-18 02:00:33,121 - Run ended. Run time: 0.36 seconds
+2024-10-18 02:00:48,817 - Run ended. Run time: 14.66 seconds
+2024-10-18 02:01:10,182 - Run ended. Run time: 20.35 seconds
+2024-10-18 02:01:11,574 - Run ended. Run time: 0.37 seconds
+2024-10-18 02:01:25,745 - Run ended. Run time: 13.14 seconds
+2024-10-18 02:01:27,125 - Run ended. Run time: 0.36 seconds
+2024-10-18 02:01:28,501 - Run ended. Run time: 0.35 seconds
+2024-10-18 02:01:38,280 - Run ended. Run time: 8.74 seconds
+2024-10-18 02:01:39,644 - Run ended. Run time: 0.35 seconds
+2024-10-18 02:02:01,011 - Run ended. Run time: 20.34 seconds
+2024-10-18 02:02:09,950 - Run ended. Run time: 7.92 seconds
+2024-10-18 02:02:11,320 - Run ended. Run time: 0.35 seconds
+2024-10-18 02:02:32,689 - Run ended. Run time: 20.34 seconds
+2024-10-18 02:02:37,812 - Run ended. Run time: 4.08 seconds
+2024-10-18 02:02:38,830 - Experiment completed. Total time: 147.45 seconds

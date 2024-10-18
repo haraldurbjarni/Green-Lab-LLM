@@ -8,4 +8,4 @@ Source: 1, Destination: 4, Weight: 2
 Source: 3, Destination: 2, Weight: 5
 Source: 3, Destination: 1, Weight: 1
 Source: 4, Destination: 3, Weight: -3
-Energy consumption in joules: 111.2939453125 for 20.00554 sec of execution.
+Energy consumption in joules: 111.61126708984375 for 20.016523 sec of execution.
