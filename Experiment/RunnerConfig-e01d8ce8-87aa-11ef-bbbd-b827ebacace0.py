@@ -71,7 +71,7 @@ class RunnerConfig:
         self.run_table_model = RunTableModel(
             factors=[llm_factor, algorithm_factor],
             exclude_variations=[],
-            repetitions=2,
+            repetitions= 2,
             data_columns=["cpu_freq_0", "cpu_freq_1", "cpu_freq_2", "cpu_freq_3",
                           "cpu_usage_0", "cpu_usage_1","cpu_usage_2", "cpu_usage_3",
                           "total_memory", "used_memory", "total_swap", "used_swap",
