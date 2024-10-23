@@ -32,7 +32,7 @@ class RunnerConfig:
     operation_type: OperationType = OperationType.AUTO
 
     """The time Experiment Runner will wait after a run completes."""
-    time_between_runs_in_ms: int = 600000
+    time_between_runs_in_ms: int = 60000
 
     def __init__(self):
         """Executes immediately after program start, on config load"""
