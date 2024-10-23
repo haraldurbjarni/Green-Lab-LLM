@@ -23,7 +23,7 @@ class RunnerConfig:
 
     # ================================ USER SPECIFIC CONFIG ================================
     """The name of the experiment."""
-    name: str = "new_runner_experiment_1"
+    name: str = "new_runner_experiment_0"
 
     """Output path defaults to the config file's path, inside the folder 'experiments'"""
     results_output_path: Path = ROOT_DIR / "experiments"
