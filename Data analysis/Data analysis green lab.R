@@ -5,6 +5,8 @@ library(ggplot2)
 library(dplyr)
 library(tidyr)  # For pivot_longer()
 library(reshape2) # For correlation heatmap
+library(stats)
+library(dplyr)
 
 # Load dataset 
 data <- read.csv("run_table.csv")
@@ -83,9 +85,10 @@ ggplot(cdata, aes(x = algorithm, y = run_time, fill = llm)) +
 
 
 
-# Ensure used_memory is in GB
-memoryData <- memoryData %>%
-  mutate(used_memory_gb = used_memory / (1024^3))  # Convert from bytes to GB
+
+# Convert used_memory to GB
+data <- data %>%
+  mutate(used_memory_gb = used_memory / (1024^3))
 
 # Plot memory usage (used_memory in GB)
 ggplot(data, aes(x = algorithm, y = used_memory_gb, fill = llm)) +
@@ -99,10 +102,6 @@ ggplot(data, aes(x = algorithm, y = used_memory_gb, fill = llm)) +
 
 
 
-
-# Convert used_memory to GB
-data <- data %>%
-  mutate(used_memory_gb = used_memory / (1024^3))
 
 # Calculate average CPU usage and frequency
 data <- data %>%
@@ -136,3 +135,88 @@ ggplot(cor_matrix_melted, aes(Var1, Var2, fill = value)) +
   theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
   geom_text(aes(label = round(value, 2)), color = "black", size = 4) +
   coord_fixed()
+
+
+
+descriptive_stats <- data %>%
+  group_by(llm, algorithm) %>%
+  summarise(
+    Mean_CPU = mean(average_cpu_usage, na.rm = TRUE),
+    Mean_Memory = mean(used_memory_gb, na.rm = TRUE),
+    Mean_Energy = mean(total_energy, na.rm = TRUE),
+    Std_Dev_CPU = sd(average_cpu_usage, na.rm = TRUE)  # Standard deviation of average CPU usage
+  ) %>%
+  ungroup()
+print(descriptive_stats)
+
+
+
+# Define a function to check normality
+check_normality <- function(data_vector, variable_name) {
+  if (length(data_vector) < 3) {
+    cat(paste(variable_name, "has insufficient data for normality test.\n"))
+    return(NULL)
+  }
+  
+  test_result <- shapiro.test(data_vector)
+  p_value <- test_result$p.value
+  if (p_value > 0.05) {
+    result <- "normally distributed"
+  } else {
+    result <- "not normally distributed"
+  }
+  cat(paste(variable_name, "is", result, "with a p-value of", round(p_value, 4)), "\n")
+}
+
+# Check normality of relevant variables
+check_normality(correlation_data$`Energy Us.`, "Total Energy")
+check_normality(correlation_data$`CPU Us.`, "Average CPU Usage")
+check_normality(correlation_data$`Execution Time`, "Execution Time")
+check_normality(correlation_data$Memory, "Used Memory (GB)")
+check_normality(correlation_data$`CPU Freq.`, "Average CPU Frequency")
+
+# Histogram for Total Energy
+ggplot(data, aes(x = total_energy, fill = llm)) +
+  geom_histogram(bins = 30, position = "dodge", alpha = 0.7) +
+  labs(title = "Histogram of Total Energy",
+       x = "Total Energy (Joules)", 
+       y = "Frequency") +
+  facet_grid(llm ~ algorithm) +  # Facet by LLM and algorithm
+  theme_minimal()
+
+# Histogram for Average CPU Usage
+ggplot(data, aes(x = average_cpu_usage, fill = llm)) +
+  geom_histogram(bins = 30, position = "dodge", alpha = 0.7) +
+  labs(title = "Histogram of Average CPU Usage",
+       x = "Average CPU Usage (%)", 
+       y = "Frequency") +
+  facet_grid(llm ~ algorithm) +  # Facet by LLM and algorithm
+  theme_minimal()
+
+# Histogram for Execution Time
+ggplot(data, aes(x = run_time, fill = llm)) +
+  geom_histogram(bins = 30, position = "dodge", alpha = 0.7) +
+  labs(title = "Histogram of Execution Time",
+       x = "Execution Time (s)", 
+       y = "Frequency") +
+  facet_grid(llm ~ algorithm) +  # Facet by LLM and algorithm
+  theme_minimal()
+
+# Histogram for Used Memory
+ggplot(data, aes(x = used_memory_gb, fill = llm)) +
+  geom_histogram(bins = 30, position = "dodge", alpha = 0.7) +
+  labs(title = "Histogram of Used Memory (GB)",
+       x = "Used Memory (GB)", 
+       y = "Frequency") +
+  facet_grid(llm ~ algorithm) +  # Facet by LLM and algorithm
+  theme_minimal()
+
+# Histogram for Average CPU Frequency
+ggplot(data, aes(x = average_cpu_freq, fill = llm)) +
+  geom_histogram(bins = 30, position = "dodge", alpha = 0.7) +
+  labs(title = "Histogram of Average CPU Frequency",
+       x = "Average CPU Frequency (MHz)", 
+       y = "Frequency") +
+  facet_grid(llm ~ algorithm) +  # Facet by LLM and algorithm
+  theme_minimal()
+
