@@ -105,9 +105,10 @@ ggplot(data, aes(x = algorithm, y = used_memory_gb, fill = llm)) +
 
 # Calculate average CPU usage and frequency
 data <- data %>%
-  mutate(average_cpu_usage = rowMeans(select(data, starts_with("cpu_usage")), na.rm = TRUE),
+  mutate(average_cpu_usage = rowMeans(select(data, starts_with("cpu_usage")), na.rm = TRUE) * 4,  # Assuming 4 cores
          average_cpu_freq = rowMeans(select(data, starts_with("cpu_freq")), na.rm = TRUE)) %>%
   mutate(total_energy = dram_energy + pp0_energy + pp1_energy + package_energy)
+
 
 # Select relevant columns for correlation analysis
 correlation_data <- data %>%
