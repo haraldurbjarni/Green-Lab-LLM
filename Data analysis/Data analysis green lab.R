@@ -139,17 +139,21 @@ ggplot(cor_matrix_melted, aes(Var1, Var2, fill = value)) +
 
 
 
+# Calculate mean and standard deviation for each metric
 descriptive_stats <- data %>%
   group_by(llm, algorithm) %>%
   summarise(
     Mean_CPU = mean(average_cpu_usage, na.rm = TRUE),
+    Std_Dev_CPU = sd(average_cpu_usage, na.rm = TRUE),
     Mean_Memory = mean(used_memory_gb, na.rm = TRUE),
+    Std_Dev_Memory = sd(used_memory_gb, na.rm = TRUE),
     Mean_Energy = mean(total_energy, na.rm = TRUE),
-    Std_Dev_CPU = sd(average_cpu_usage, na.rm = TRUE)  # Standard deviation of average CPU usage
+    Std_Dev_Energy = sd(total_energy, na.rm = TRUE)
   ) %>%
   ungroup()
-print(descriptive_stats)
 
+# Print the descriptive statistics
+print(descriptive_stats)
 
 
 # Define a function to check normality
