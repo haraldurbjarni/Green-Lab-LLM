@@ -23,7 +23,7 @@ class RunnerConfig:
 
     # ================================ USER SPECIFIC CONFIG ================================
     """The name of the experiment."""
-    name: str = "new_runner_experiment_1"
+    name: str = "new_runner_experiment_0"
 
     """Output path defaults to the config file's path, inside the folder 'experiments'"""
     results_output_path: Path = ROOT_DIR / "experiments"
@@ -32,7 +32,7 @@ class RunnerConfig:
     operation_type: OperationType = OperationType.AUTO
 
     """The time Experiment Runner will wait after a run completes."""
-    time_between_runs_in_ms: int = 1000
+    time_between_runs_in_ms: int = 60000
 
     def __init__(self):
         """Executes immediately after program start, on config load"""
@@ -66,12 +66,12 @@ class RunnerConfig:
 
     def create_run_table_model(self) -> RunTableModel:
         """Create and return the run_table model."""
-        llm_factor = FactorModel("llm", ["ChatGPT", "Claude", "Gemeni", "Llama", "Mistral"])
+        llm_factor = FactorModel("llm", ["ChatGPT", "Claude", "Gemeni"])
         algorithm_factor = FactorModel("algorithm", ["BB", "BFA", "SWA"])
         self.run_table_model = RunTableModel(
             factors=[llm_factor, algorithm_factor],
             exclude_variations=[],
-            repetitions= 2,
+            repetitions=100,
             data_columns=["cpu_freq_0", "cpu_freq_1", "cpu_freq_2", "cpu_freq_3",
                           "cpu_usage_0", "cpu_usage_1","cpu_usage_2", "cpu_usage_3",
                           "total_memory", "used_memory", "total_swap", "used_swap",
